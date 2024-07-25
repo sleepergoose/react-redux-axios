@@ -1,15 +1,23 @@
 import { takeEvery, put, call, fork } from 'redux-saga/effects';
 import { GET_PRODUCTS } from '../constants';
 import { getProducts, getFilteredProducts } from '../../api/http.service.js';
-import { setProducts, setFilteredProducts } from '../actions.js';
+import { setProducts, setFilteredProducts, setProductError } from '../actions.js';
 
 function* handleGetProducts() {
-  const data = yield call(getProducts, 3);
-  yield put(setProducts(data));
+  try {
+    const data = yield call(getProducts, 3);
+    yield put(setProducts(data));
+  } catch (error) {
+    yield put(setProductError(error.message || error));
+  }
 }
 function* handleGetFilteredProducts() {
-  const data = yield call(getFilteredProducts, 'smartphone');
-  yield put(setFilteredProducts(data));
+  try {
+    const data = yield call(getFilteredProducts, 'smartphone');
+    yield put(setFilteredProducts(data));
+  } catch (error) {
+    yield put(setProductError(error?.message || error));
+  }
 }
 
 export function* handleProducts() {

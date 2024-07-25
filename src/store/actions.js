@@ -5,6 +5,7 @@ import {
   SET_PRODUCTS,
   CLEAR_PRODUCTS,
   SET_FILTERED_PRODUCTS,
+  SET_PRODUCTS_ERORR,
 } from './constants';
 
 export const incrementCount = (payload) => ({
@@ -33,4 +34,9 @@ export const setFilteredProducts = (payload) => ({
 
 export const clearProducts = () => ({
   type: CLEAR_PRODUCTS,
+});
+
+export const setProductError = (payload) => ({
+  type: SET_PRODUCTS_ERORR,
+  payload,
 });

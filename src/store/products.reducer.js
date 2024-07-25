@@ -2,6 +2,7 @@ import {
   SET_PRODUCTS,
   CLEAR_PRODUCTS,
   SET_FILTERED_PRODUCTS,
+  SET_PRODUCTS_ERORR,
 } from './constants';
 
 const initialState = {
@@ -13,6 +14,7 @@ const initialState = {
     products: [],
     count: 0,
   },
+  error: ''
 };
 
 const products = (state = initialState, { type, payload }) => {
@@ -26,6 +28,11 @@ const products = (state = initialState, { type, payload }) => {
       return {
         ...state,
         filteredProducts: payload,
+      };
+    case SET_PRODUCTS_ERORR:
+      return {
+        ...state,
+        error: payload,
       };
     case CLEAR_PRODUCTS:
       return {
