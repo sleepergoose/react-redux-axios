@@ -1,34 +1,41 @@
-import { takeEvery, put, call, fork } from 'redux-saga/effects';
-import { GET_PRODUCTS } from '../constants';
-import { getProducts, getFilteredProducts } from '../../api/http.service.js';
-import { setProducts, setFilteredProducts, setProductError } from '../actions.js';
+import { takeEvery, call, put } from 'redux-saga/effects';
+import {
+  GET_PRODUCTS,
+  GET_FILTERED_PRODUCTS,
+  SET_PRODUCTS_ERROR
+} from '../constants';
+import { getFilteredProductsApi, getProductsApi } from '../../api/http.service.js';
+import { setFilteredProducts, setProducts } from '../actions'
 
-function* handleGetProducts() {
+function* getProductsWorker() {
   try {
-    const data = yield call(getProducts, 3);
+    const data = yield call(getProductsApi, 3);
     yield put(setProducts(data));
   } catch (error) {
-    yield put(setProductError(error.message || error));
+    yield put({ type: SET_PRODUCTS_ERROR, payload: error?.message || error });
   }
 }
-function* handleGetFilteredProducts() {
+
+export function* getProductsWatcher() {
+  yield takeEvery(GET_PRODUCTS, getProductsWorker);
+}
+
+function* getFilteredProductsWorker() {
   try {
-    const data = yield call(getFilteredProducts, 'smartphone');
+    const data = yield call(getFilteredProductsApi, 'smartphone');
     yield put(setFilteredProducts(data));
   } catch (error) {
-    yield put(setProductError(error?.message || error));
+    yield put({ type: SET_PRODUCTS_ERROR, payload: error?.message || error });
   }
 }
 
-export function* handleProducts() {
-  yield fork(handleGetFilteredProducts);
-  yield fork(handleGetProducts);
+export function* getFilteredProductsWatcher() {
+  yield takeEvery(GET_FILTERED_PRODUCTS, getFilteredProductsWorker);
 }
 
-export function* watchProductsSaga() {
-  yield takeEvery(GET_PRODUCTS, handleProducts);
-}
-
+// watcher
+// worker
 // put - is an analog of dispatch in redux. It just dispatcher a passed action into it.
 // call - blogking stops saga until a Promise returns resolve
 // fork - non-blocking
+// spawn - creates a concurrent task in the root of saga and its execution is not tied to the parent saga
