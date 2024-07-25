@@ -8,4 +8,5 @@ Get to know Redux and Axios
 pnpm create vite
 pnpm i redux react-redux redux-saga
 pnpm i react-router-dom
+pnpm i axios
 ```

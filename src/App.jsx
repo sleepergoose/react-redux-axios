@@ -1,33 +1,44 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
+import { useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux';
+import { clearProducts, decrementCount, incrementCount, getProducts } from './store/actions';
 
 function App() {
-  const [count, setCount] = useState(0)
+  const count = useSelector(state => state?.counter?.count);
+  const products = useSelector(state => state?.products?.products);
+  console.log(products)
+  const dispatch = useDispatch();
+
+  const handleIncrement = () => {
+    dispatch(incrementCount(10));
+  };
+
+  const handleDecrement = () => {
+    dispatch(decrementCount(10));
+  };
+
+  const handleGetProducts = () => {
+    dispatch(getProducts());
+  };
+
+  const handleClearProducts = () => {
+    dispatch(clearProducts());
+  };
 
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <h3>Count:</h3>
+      <h3>{count}</h3>
+      <button onClick={handleIncrement}>Increment</button>
+      <button onClick={handleDecrement}>Decrement</button>
+      <hr />
+      <h3>Products:</h3>
+      {products && (<h4 style={{ color: 'green' }}>Products Count: {products.count}</h4>)}
+      {products?.count > 0 && products.products.map(product => (
+        <p key={product._id}>{product.name}</p>
+      ))}
+      <button onClick={handleGetProducts}>Get Products</button>
+      <button onClick={handleClearProducts}>Clear Products</button>
     </>
   )
 }
