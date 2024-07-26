@@ -1,22 +1,26 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getFilteredProducts } from '../store/actions';
+import { getFilteredProductsAction } from '../store/slices/products.slice';
+
 
 const Filtered = () => {
-  const products = useSelector(store => store?.products?.filteredProducts);
+  const productsData = useSelector(store => store?.products?.filteredProducts);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    console.log('Filtered')
-    dispatch(getFilteredProducts());
+    dispatch(getFilteredProductsAction());
   }, [dispatch]);
 
   return (
     <>
-      {products && <h3>Filtered product count: {products.count}</h3>}
+      {productsData?.isLoading && (<h1>Loading...</h1>)}
+      {(productsData?.data && !productsData?.isLoading) && <h3>Filtered product count: {productsData.data.count}</h3>}
       <ul>
-        {products?.count > 0 && products.products.map(product => (
-          <li key={product._id}>{product.name}</li>
+        {productsData?.data?.count > 0 && productsData.data.products.map(product => (
+          <li key={product._id} style={{
+            listStyle: 'none',
+            textAlign: 'left',
+          }}>{product.name}</li>
         ))}
       </ul>
     </>

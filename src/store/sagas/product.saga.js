@@ -1,36 +1,32 @@
-import { takeEvery, call, put } from 'redux-saga/effects';
-import {
-  GET_PRODUCTS,
-  GET_FILTERED_PRODUCTS,
-  SET_PRODUCTS_ERROR
-} from '../constants';
+import { call, put, takeLatest } from 'redux-saga/effects';
 import { getFilteredProductsApi, getProductsApi } from '../../api/http.service.js';
-import { setFilteredProducts, setProducts } from '../actions'
+import { getFilteredProductsAction, setFilteredProductsErrorActions, setFilteredProductsSuccessAction, setProductsErrorActions, setProductsSuccessAction } from '../slices/products.slice.js';
+// import { setFilteredProducts, setProducts } from '../actions'
 
 function* getProductsWorker() {
   try {
     const data = yield call(getProductsApi, 3);
-    yield put(setProducts(data));
+    yield put(setProductsSuccessAction(data));
   } catch (error) {
-    yield put({ type: SET_PRODUCTS_ERROR, payload: error?.message || error });
+    yield put(setProductsErrorActions(error));
   }
 }
 
 export function* getProductsWatcher() {
-  yield takeEvery(GET_PRODUCTS, getProductsWorker);
+  yield takeLatest('products/getProducts', getProductsWorker);
 }
 
 function* getFilteredProductsWorker() {
   try {
-    const data = yield call(getFilteredProductsApi, 'smartphone');
-    yield put(setFilteredProducts(data));
+    const data = yield call(getFilteredProductsApi, 'powerbank');
+    yield put(setFilteredProductsSuccessAction(data));
   } catch (error) {
-    yield put({ type: SET_PRODUCTS_ERROR, payload: error?.message || error });
+    yield put(setFilteredProductsErrorActions(error));
   }
 }
 
 export function* getFilteredProductsWatcher() {
-  yield takeEvery(GET_FILTERED_PRODUCTS, getFilteredProductsWorker);
+  yield takeLatest(getFilteredProductsAction, getFilteredProductsWorker);
 }
 
 // watcher

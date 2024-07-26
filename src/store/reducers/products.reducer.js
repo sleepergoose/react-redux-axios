@@ -2,7 +2,7 @@ import {
   SET_PRODUCTS,
   SET_FILTERED_PRODUCTS,
   SET_PRODUCTS_ERROR,
-} from './constants';
+} from '../constants';
 
 const initialState = {
   products: {

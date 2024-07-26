@@ -9,4 +9,5 @@ pnpm create vite
 pnpm i redux react-redux redux-saga
 pnpm i react-router-dom
 pnpm i axios
+pnpm i @reduxjs/toolkit
 ```
