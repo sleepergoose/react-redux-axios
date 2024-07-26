@@ -21,7 +21,7 @@ function* getFilteredProductsWorker() {
     const data = yield call(getFilteredProductsApi, 'powerbank');
     yield put(setFilteredProductsSuccessAction(data));
   } catch (error) {
-    yield put(setFilteredProductsErrorActions(error));
+    yield put(setFilteredProductsErrorActions(error?.payload?.message));
   }
 }
 

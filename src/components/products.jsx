@@ -14,6 +14,11 @@ const Products = () => {
 
   return (
     <>
+      {(productsData?.errors) && (
+        <h3 style={{
+          color: 'red',
+        }}>{productsData.errors?.payload?.message}</h3>
+      )}
       {productsData?.isLoading && (<h1>Loading...</h1>)}
       {(productsData?.data && !productsData?.isLoading) && <h3>Product count: {productsData.data.count}</h3>}
       <ul>
