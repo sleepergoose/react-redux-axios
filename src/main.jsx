@@ -7,11 +7,17 @@ import store from './store/store.js';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom'
 import Products from './components/products.jsx';
 import Filtered from './components/filtered.jsx';
+import Login from './components/login.jsx'
+import AuthGuard from './guards/auth.guard.jsx'
 
 const router = createBrowserRouter([
   {
+    path: '/login',
+    element: <Login />,
+  },
+  {
     path: '/',
-    element: <App />,
+    element: <AuthGuard component={<App />} />,
     children: [
       {
         path: '/products',

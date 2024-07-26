@@ -8,7 +8,6 @@ const Products = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    console.log('Products')
     dispatch(getProducts());
   }, [dispatch]);
 
